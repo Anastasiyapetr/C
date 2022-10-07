@@ -1,0 +1,59 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 100
+#define COUNT_FOR 5
+
+char *formatDuration (int n) {
+  char *result = malloc(MAX * sizeof(char));
+  strcpy(result, "\0");
+  char *format [COUNT_FOR] = {"second", "minute", "hour", "day", "year"};
+  int format_size [COUNT_FOR] = {0};
+  int tmp = n, count = 0;
+  char temp[5] = {'\0'};
+  if (n != 0) {
+      while (tmp > 59) {
+          format_size[1]++;
+          tmp -= 60;
+          if (format_size[1] == 60) {
+              format_size[2]++;
+              format_size[1] = 0;
+          }
+          if (format_size[2] == 24) {
+              format_size[3]++;
+              format_size[2] = 0;
+          }
+          if (format_size[3] == 365) {
+              format_size[4]++;
+              format_size[3] = 0;
+          }
+      }
+      format_size[0] = n - format_size[4] * 365 * 86400 - format_size[3] * 86400 -
+                        format_size[2] * 3600 - format_size[1]*60;
+        
+      for (int i = COUNT_FOR-1; i>= 0; i--) {
+        if (format_size[i] >= 1) {
+            sprintf(temp, "%d ", format_size[i]);
+            strcat(result, temp);
+            strcat(result, format[i]);
+            if (format_size[i] > 1)
+                strcat(result, "s");
+            int index = i - 1;
+            while (index >= 0) {
+                if (format_size[index] > 0)
+                    count++;
+                    index--;
+                }
+                if (count == 1) 
+                    strcat(result, " and ");
+                else if (count > 1)
+                    strcat (result, ", ");
+                count = 0;
+            }
+        }
+  } else {
+      strcat(result, "now");
+  }
+  return result;
+}
