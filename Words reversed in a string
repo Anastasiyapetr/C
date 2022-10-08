@@ -1,0 +1,25 @@
+#include <string.h>
+
+void spin_words(const char *sentence, char *result) {
+  int len = strlen(sentence);
+  int count = 0, begin = 0, index = 0;
+
+  for (int i = 0; i <= len; i++) {
+    if (sentence[i] != ' ' && sentence[i] != '\0') {
+      count++;
+    } else {
+      if (count >= 5) {
+        for (int j = begin+count-1; j >= begin; j--) {
+          result[index++] = sentence[j];
+        }
+        result[index++] = sentence[i];
+     } else {
+        for (int j = begin; j <= begin + count; j++) {
+          result[index++] = sentence[j];
+        }
+    }
+    begin = begin + count + 1;
+    count = 0;
+    }
+  }
+  
