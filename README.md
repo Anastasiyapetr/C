@@ -1,2 +1,2 @@
-# C-language
-Projects on language C
+# C
+Own C projects
