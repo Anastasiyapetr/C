@@ -8,125 +8,105 @@
 #include "RomanNumerals.h"
 #include <string.h>
 
-START_TEST(one)
-{
+START_TEST(one) {
 
-int a = 1;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "I"), 0);
-free(tmp);
-
+  int a = 1;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "I"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(two)
-{
+START_TEST(two) {
 
-int a = 2;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "II"), 0);
-free(tmp);
-
+  int a = 2;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "II"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(three)
-{
+START_TEST(three) {
 
-int a = 3;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "III"), 0);
-free(tmp);
-
+  int a = 3;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "III"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(four)
-{
+START_TEST(four) {
 
-int a = 4;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "IV"), 0);
-free(tmp);
-
+  int a = 4;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "IV"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(five)
-{
+START_TEST(five) {
 
-int a = 5;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "V"), 0);
-free(tmp);
-
+  int a = 5;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "V"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(six)
-{
+START_TEST(six) {
 
-int a = 6;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "VI"), 0);
-free(tmp);
-
+  int a = 6;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "VI"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(error)
-{
+START_TEST(error) {
 
-int a = -1;
-char* tmp = solution(a);
-ck_assert_int_eq(tmp[0], 0);
-free(tmp);
-
-
+  int a = -1;
+  char *tmp = solution(a);
+  ck_assert_int_eq(tmp[0], 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(one_zero_zero_one)
-{
-int a = 1001;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "MI"), 0);
-free(tmp);
-
+START_TEST(one_zero_zero_one) {
+  int a = 1001;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "MI"), 0);
+  free(tmp);
 }
 END_TEST
 
-START_TEST(one_six_six_six)
-{
-int a = 1666;
-char* tmp = solution(a);
-ck_assert_int_eq(strcmp(tmp, "MDCLXVI"), 0);
-free(tmp);
-
+START_TEST(one_six_six_six) {
+  int a = 1666;
+  char *tmp = solution(a);
+  ck_assert_int_eq(strcmp(tmp, "MDCLXVI"), 0);
+  free(tmp);
 }
 END_TEST
 
-int main(void)
-{
-    Suite *s1 = suite_create("Core");
-    TCase *tc1_1 = tcase_create("Core");
-    SRunner *sr = srunner_create(s1);
-    int nf;
+int main(void) {
+  Suite *s1 = suite_create("Core");
+  TCase *tc1_1 = tcase_create("Core");
+  SRunner *sr = srunner_create(s1);
+  int nf;
 
-    suite_add_tcase(s1, tc1_1);
-    tcase_add_test(tc1_1, one);
-    tcase_add_test(tc1_1, two);
-    tcase_add_test(tc1_1, three);
-    tcase_add_test(tc1_1, four);
-    tcase_add_test(tc1_1, five);
-    tcase_add_test(tc1_1, six);
-    tcase_add_test(tc1_1, error);
-    tcase_add_test(tc1_1, one_zero_zero_one);
-    tcase_add_test(tc1_1, one_six_six_six);
+  suite_add_tcase(s1, tc1_1);
+  tcase_add_test(tc1_1, one);
+  tcase_add_test(tc1_1, two);
+  tcase_add_test(tc1_1, three);
+  tcase_add_test(tc1_1, four);
+  tcase_add_test(tc1_1, five);
+  tcase_add_test(tc1_1, six);
+  tcase_add_test(tc1_1, error);
+  tcase_add_test(tc1_1, one_zero_zero_one);
+  tcase_add_test(tc1_1, one_six_six_six);
 
-    srunner_run_all(sr, CK_ENV);
-    nf = srunner_ntests_failed(sr);
-    srunner_free(sr);
+  srunner_run_all(sr, CK_ENV);
+  nf = srunner_ntests_failed(sr);
+  srunner_free(sr);
 
-    return nf == 0 ? 0 : 1;
+  return nf == 0 ? 0 : 1;
 }
