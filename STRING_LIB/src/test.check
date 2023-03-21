@@ -1,0 +1,1107 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "n_string.h"
+
+#define BUFF_SIZE 512
+
+#test-loop(0, 5) test_n_memchr
+char str[6][20] = {"heLLo", "wOrlD", "!", "  ", "", " "};
+char c[6] = {'e', 'r', 'q', '\0', 'f', '\0'};
+char *res = memchr(str[_i], c[_i], 2);
+char *res_n = n_memchr(str[_i], c[_i], 2);
+ck_assert_msg(res == res_n, "| memchr: {%s}| n_memchr: {%s}|", res,
+              res_n);
+// ck_assert_msg(0, "| memchr: {%s}| n_memchr: {%s}|", res, res_n);
+
+#test-loop(0, 5) test_n_memcmp
+char str1[5][20] = {"hhLLo", "wOrlD", "!", "fff", ""};
+char str2[5][20] = {"hhLLo", "wOrhD", "!", "ff", ""};
+int res = memcmp(str1[_i], str2[_i], 2);
+int res_n = n_memcmp(str1[_i], str2[_i], 2);
+ck_assert_msg(res == res_n, "| memcmp: {%d}| n_memcmp: {%d}|", res,
+              res_n);
+
+#test-loop(0, 5) test_n_memcpy
+char dest[5][20] = {"heLLo", "wOrlD", "dfg!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOrlD", "dfg!", " ", ""};
+char src[5][20] = {"wr", "wwgwerewr", "ffff\0", " ", "r"};
+char *res = memcpy(dest[_i], src[_i], 3);
+char *res_n = n_memcpy(n_dest[_i], src[_i], 3);
+// !strcmp(dest[_i], n_dest[_i]) && (*res == *res_n)
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| memcpy: {%s} | n_memcpy: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_memmove
+char dest[5][20] = {"heLLo", "wOglD", "!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOglD", "!", " ", ""};
+char src[5][20] = {"wr", "wwrwerewr", "", " ", "r"};
+char *res = memmove(dest[_i], src[_i], 3);
+char *res_n = n_memmove(n_dest[_i], src[_i], 3);
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| memmove: {%s} | n_memmove: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_memset
+char str[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char n_str[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char sym_mset[5] = {'e', 'r', 'q', '\0', 'f'};
+char *res = memset(str[_i], sym_mset[_i], 3);
+char *res_n = n_memset(n_str[_i], sym_mset[_i], 3);
+ck_assert_msg(!strcmp(str[_i], n_str[_i]) && (*res == *res_n),
+              "| memset: {%s} | n_memset: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_strlen
+char str[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+ck_assert(strlen(str[_i]) == n_strlen(str[_i]));
+
+#test-loop(0, 5) test_n_strcat
+char dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char src[5][20] = {"wr", "wwrwerewr", "", " ", "r"};
+char *res = strcat(dest[_i], src[_i]);
+char *res_n = n_strcat(n_dest[_i], src[_i]);
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| strcat: {%s} | n_strcat: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_strncat
+char dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char src[5][20] = {"wr", "wwrwerewr", "", " ", "r"};
+char *res = strncat(dest[_i], src[_i], 3);
+char *res_n = n_strncat(n_dest[_i], src[_i], 3);
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| strncat: {%s} | n_strncat: {%s} |", res, res_n);
+
+#test-loop(0, 4) test_n_strchr
+char str[5][20] = {"heLLo", "wOrlD", "!", "", " "};
+char c[5] = {'e', 'r', 'q', 'f', '\0'};
+char *res = strchr(str[_i], c[_i]);
+char *res_n = n_strchr(str[_i], c[_i]);
+ck_assert_msg(res == res_n, "| strchr: {%s} | n_strchr: {%s} |", res,
+              res_n);
+// ck_assert_msg(0, "| strchr: {%s} | n_strchr: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_strcmp
+char str1[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char str2[5][20] = {"hhLLo", "wOrhD", "!", "", ""};
+int res = strcmp(str1[_i], str2[_i]);
+int res_n = n_strcmp(str1[_i], str2[_i]);
+ck_assert_msg(res == res_n, "| strcmp: {%d} | n_strcmp: {%d} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strncmp
+char str1[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char str2[5][20] = {"hhLLo", "wOrhD", "!", "", ""};
+int res = strncmp(str1[_i], str2[_i], 3);
+int res_n = n_strncmp(str1[_i], str2[_i], 3);
+ck_assert_msg(res == res_n, "| strncmp: {%d} | n_strncmp: {%d} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strcpy
+char dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char src[5][20] = {"wr", "wwrwerewr", "", " ", "r"};
+char *res = strcpy(dest[_i], src[_i]);
+char *res_n = n_strcpy(n_dest[_i], src[_i]);
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| strcpy: {%s} | n_strcpy: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_strncpy
+char dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char n_dest[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char src[5][20] = {"wr", "wwgwerewr", "", " ", "r"};
+char *res = strncpy(dest[_i], src[_i], 3);
+char *res_n = n_strncpy(n_dest[_i], src[_i], 3);
+ck_assert_msg(!strcmp(dest[_i], n_dest[_i]) && (*res == *res_n),
+              "| strncpy: {%s} | n_strncpy: {%s} |", res, res_n);
+
+#test-loop(0, 5) test_n_strcspn
+char str1[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char str2[5][20] = {"hhLLo", "wOrhD", "!", "", ""};
+int res = strcspn(str1[_i], str2[_i]);
+int res_n = n_strcspn(str1[_i], str2[_i]);
+ck_assert_msg(res == res_n, "| strcspn: {%d} | n_strcspn: {%d} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strpbrk
+char str1[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char str2[5][20] = {"Le", "vcxzbrvx", "!", "", ""};
+char *res = strpbrk(str1[_i], str2[_i]);
+char *res_n = n_strpbrk(str1[_i], str2[_i]);
+ck_assert_msg(res == res_n, "| strpbrk: {%s} | n_strpbrk: {%s} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strrchr
+char str[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char c[5] = {'e', 'r', 'q', '\0', 'f'};
+char *res = strrchr(str[_i], c[_i]);
+char *res_n = n_strrchr(str[_i], c[_i]);
+ck_assert_msg(res == res_n, "| strrchr: {%s} | n_strrchr: {%s} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strspn
+char str1[5][20] = {"heLLo", "wOrlD", "!", " ", ""};
+char str2[5][20] = {"hhLLo", "wOrhD", "!", "", ""};
+int res = strspn(str1[_i], str2[_i]);
+int res_n = n_strspn(str1[_i], str2[_i]);
+ck_assert_msg(res == res_n, "| strspn: {%d} | n_strspn: {%d} |", res,
+              res_n);
+
+#test-loop(0, 7) test_n_strstr
+char haystack[7][30] = {
+    "fsgddfgdfgdfddfggb", "wOrlDf", "vxcvxgfdgdfvb!", " ", "", "qwe",
+    "fsdfdsfsdf"};
+char needle[7][30] = {"dfd", "wOrlD", "b", " ", "", "qwertyuiop", ""};
+char *res = strstr(haystack[_i], needle[_i]);
+char *res_n = n_strstr(haystack[_i], needle[_i]);
+ck_assert_msg(res == res_n, "| strstr: {%s} | n_strstr: {%s} |", res,
+              res_n);
+
+#test-loop(0, 5) test_n_strtok
+char str[5][60] = {"test1/test2/", "test1/test2/", "test1/test2/",
+                   "test1/test2/", "test1/test2/"};
+char str_n[5][60] = {"test1/test2/", "test1/test2/", "test1/test2/",
+                       "test1/test2/", "test1/test2/"};
+char delim[5][10] = {"/t", "/", "", " ", "\0"};
+char *res = strtok(str[_i], delim[_i]);
+char *res_n = n_strtok(str_n[_i], delim[_i]);
+while (res != NULL && res_n != NULL) {
+  ck_assert_msg(!strcmp(res, res_n), "| strtok: {%s} | n_strtok: {%s} |",
+                res, res_n);
+  res = strtok(NULL, delim[_i]);
+  res_n = n_strtok(NULL, delim[_i]);
+}
+
+#test-loop(0, 140) test_n_strerror
+char *res = strerror(_i);
+char *res_n = n_strerror(_i);
+ck_assert_str_eq(res, res_n);
+
+#test-loop(0, 5) test_n_to_upper
+char str[5][20] = {"qwerty", "QsWdEfRgT", "123eewfewr32e3FRSF", "", " "};
+char res[5][20] = {"QWERTY", "QSWDEFRGT", "123EEWFEWR32E3FRSF", "", " "};
+char *res_n = n_to_upper(str[_i]);
+ck_assert_msg(!strcmp(res[_i], res_n),
+              "| to_upper: {%s} | n_to_upper: {%s} |", res[_i], res_n);
+free(res_n);
+
+#test-loop(0, 5) test_n_to_lower
+char str[5][20] = {"qwerty", "QsWdEfRgT", "123eewfewr32e3FRSF", "", "' "};
+char res[5][20] = {"qwerty", "qswdefrgt", "123eewfewr32e3frsf", "", "' "};
+char *res_n = n_to_lower(str[_i]);
+ck_assert_msg(!strcmp(res[_i], res_n),
+              "| to_lower: {%s} | n_to_lower: {%s} |", res[_i], res_n);
+free(res_n);
+
+#test-loop(0, 5) test_n_insert
+char src[5][100] = {"123456", "123456", "123456", "123456", "1234 56"};
+char str[5][100] = {"ggg", "ggg", "", "\0", " "};
+char res[5][100] = {"ggg123456", "1ggg23456", "123456", "123456", "1234  56"};
+char *res_n = n_insert(src[_i], str[_i], _i);
+ck_assert_msg(!strcmp(res[_i], res_n), "| insert: {%s} | n_insert: {%s} |",
+              res[_i], res_n);
+free(res_n);
+
+#test-loop(0, 2) test_n_trim
+char src[2][100] = {"g23abc456xyz789", "123abc456xyz789"};
+//                   012345678901234
+char trim_chars[2][100] = {"fff789f", "123456789"};
+char res[2][100] = {"g23abc456xyz", "abc456xyz"};
+char *res_n = n_trim(src[_i], trim_chars[_i]);
+ck_assert_msg(!strcmp(res[_i], res_n), "| trim: {%s} | n_trim: {%s} |",
+              res[_i], res_n);
+free(res_n);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#test test_n_sprintf_d
+char *format = "%3d %-3d %d %d %-5d %d";
+char res[2048];
+char res_n[2048];
+int r = sprintf(res, format, 1, 2, 3, 127, 76, 4);
+int r21 = n_sprintf(res_n, format, 1, 2, 3, 127, 76, 4);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+// ck_assert_msg(0,  "\nsprintf |%s|\nnintf |%s|\n(\"%s\", %s)", res, res_n,
+// format[_i], arg[_i]);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_c
+char *format = "%3c %-3c %n %c %-5c %n";
+char res[2048];
+char res_n[2048];
+// char arg[100][100] = {"G", "R", "&n1", "0", "12", "&n2"};
+int n1, n2, n3, n4;
+int r = sprintf(res, format, 'G', 'R', &n1, 127, 76, &n2);
+int r21 = n_sprintf(res_n, format, 'G', 'R', &n3, 127, 76, &n4);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+// ck_assert_msg(0,  "\nsprintf |%s|\nnintf |%s|\n(\"%s\", %s)", res, res_n,
+// format[_i], arg[_i]);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_i_u
+char *format = "%i %u";
+char res[2048];
+char res_n[2048];
+unsigned int a = 0;
+int r = sprintf(res, format, 0, a);
+int r21 = n_sprintf(res_n, format, 0, a);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+// ck_assert_msg(0,  "\nsprintf |%s|\nnintf |%s|\n(\"%s\", %d)", res, res_n,
+// format[_i], arg[_i]);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_eE
+char *format = "%e %10.15e %# 4E %-8e";
+char res[2048];
+char res_n[2048];
+double d = 23.987;
+double dd = 0.000008;
+int r = sprintf(res, format, d, d, d, dd);
+int r21 = n_sprintf(res_n, format, d, d, d, dd);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_f
+char *format = "%f %10.15f %# 4f %-8f";
+char res[2048];
+char res_n[2048];
+double d = 23.987;
+int r = sprintf(res, format, d, d, d, d);
+int r21 = n_sprintf(res_n, format, d, d, d, d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_gG
+char *format = "%g %10.15g %# 4G %-8g";
+char res[2048];
+char res_n[2048];
+double d = 23.987;
+int r = sprintf(res, format, d, d, d, d);
+int r21 = n_sprintf(res_n, format, d, d, d, d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_o
+char *format = "%o %10.15o %# 4o %-8o";
+char res[2048];
+char res_n[2048];
+int d = 23;
+int r = sprintf(res, format, d, d, d, d);
+int r21 = n_sprintf(res_n, format, d, d, d, d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_s
+char *format = "%s %10.15s %# 4s %-8s";
+char res[2048];
+char res_n[2048];
+char *d = "my Name is Uzzzzi";
+int r = sprintf(res, format, d, d, d, d);
+int r21 = n_sprintf(res_n, format, d, d, d, d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_per
+char *format = "%% %%%%%d";
+char res[2048];
+char res_n[2048];
+int g = 2;
+int r = sprintf(res, format, g);
+int r21 = n_sprintf(res_n, format, g);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_x
+char *format = "%x %10.15x %# 4x %-8x";
+char res[2048];
+char res_n[2048];
+int d = 23;
+int r = sprintf(res, format, d, d, d, d);
+int r21 = n_sprintf(res_n, format, d, d, d, d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_p
+char *format = "%p %7.10p %#4p %-8p";
+char res[2048];
+char res_n[2048];
+double d = 23.987;
+int r = sprintf(res, format, &d, &d, &d, &d);
+int r21 = n_sprintf(res_n, format, &d, &d, &d, &d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+#test test_n_sprintf_n
+char *format = "%n %10.15n %# 4n %-8n";
+char res[2048];
+char res_n[2048];
+int d = 23;
+int r = sprintf(res, format, &d, &d, &d, &d);
+int r21 = n_sprintf(res_n, format, &d, &d, &d, &d);
+ck_assert_msg(!strcmp(res, res_n), "\nsprintf |%s|\nnintf |%s|\n\"%s\"",
+              res, res_n, format);
+ck_assert_int_eq(r, r21);
+
+/////////////////
+
+#test test_n_sscanf_proc_1
+const char str[] = "%%";
+const char fstr[] = "%%%%";
+int res1 = n_sscanf(str, fstr);
+int res2 = sscanf(str, fstr);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_proc_2
+int d1 = 0, d2 = 0, d3 = 0, d4 = 0;
+const char str[] = "12%%22";
+const char fstr[] = "%d%%%d";
+int res1 = n_sscanf(str, fstr, &d1, &d2);
+int res2 = sscanf(str, fstr, &d3, &d4);
+ck_assert_int_eq(d1, d3);
+ck_assert_int_eq(d2, d4);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_proc_3
+char ch_1 = '\0', ch_2 = '\0';
+const char str[] = " this string is % end.";
+const char fstr[] = "%*s %*s %*s %%  %c";
+int res1 = n_sscanf(str, fstr, &ch_1);
+int res2 = sscanf(str, fstr, &ch_2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(ch_1, ch_2);
+
+#test test_n_sscanf_char_1
+
+char fstr[] = "%c %c\t%c\n%c";
+char str[] = "   w     x y z";
+int a1 = 0, a2 = 5, b1 = 0, b2 = 5, c1 = 0, c2 = 5, d1 = 0, d2 = 5;
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(d1, d2);
+
+#test test_n_sscanf_char_2
+
+char fstr[] = "%*c%*c%*c%c";
+char str[] = "....!";
+int a1 = 0, a2 = 0;
+
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+
+#test test_n_sscanf_char_3
+
+char fstr[] = "%1c %c %c %0c";
+char str[] = "z *'@";
+int a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(d1, d2);
+
+#test test_n_sscanf_char_4
+char fstr[] = "%*c%*c%*c%*c";
+char str[] = "   ..";
+int a1 = 0, a2 = 0;
+
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+
+#test test_n_sscanf_char_5
+char fstr[] = "%1c%1c%*c%2c";
+char str[] = "HELLO";
+int a1 = 0, a2 = 0, a3 = 0, a4 = 0, a5 = 0, a6 = 0;
+
+int res1 = n_sscanf(str, fstr, &a1, &a2, &a3);
+int res2 = sscanf(str, fstr, &a4, &a5, &a6);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a4);
+ck_assert_int_eq(a2, a5);
+ck_assert_int_eq(a3, a6);
+
+#test test_n_sscanf_strings_1
+
+char s1[100] = {0}, s2[100] = {0}, s3[100] = {0};
+char s4[100] = {0}, s5[100] = {0}, s6[100] = {0};
+char s7[100] = {0}, s8[100] = {0};
+
+const char str[] = "\tI love school 21\n";
+const char fstr[] = "%s%s %s %s";
+
+int res1 = n_sscanf(str, fstr, s1, s2, s3, s4);
+int res2 = sscanf(str, fstr, s5, s6, s7, s8);
+ck_assert_int_eq(res1, res2);
+ck_assert_str_eq(s1, s5);
+ck_assert_str_eq(s2, s6);
+ck_assert_str_eq(s3, s7);
+ck_assert_str_eq(s4, s8);
+
+#test test_n_sscanf_strings_2
+
+char s1[100] = {0}, s2[100] = {0}, s3[100] = {0};
+char s4[100] = {0}, s5[100] = {0}, s6[100] = {0};
+char s7[100] = {0}, s8[100] = {0};
+
+const char str[] = "\tabiba boba\n";
+const char fstr[] = "%1s%2s%s %3s";
+
+int res1 = n_sscanf(str, fstr, s1, s2, s3, s4);
+int res2 = sscanf(str, fstr, s5, s6, s7, s8);
+ck_assert_int_eq(res1, res2);
+ck_assert_str_eq(s1, s5);
+ck_assert_str_eq(s2, s6);
+ck_assert_str_eq(s3, s7);
+ck_assert_str_eq(s4, s8);
+
+#test test_n_sscanf_strings_3
+
+char s1[100] = {0}, s2[100] = {0};
+char s3[100] = {0}, s4[100] = {0};
+const char str[] = "\tI love school\n    %21";
+const char fstr[] = "%*s%*s %s%%%s";
+
+int res1 = n_sscanf(str, fstr, s1, s2);
+int res2 = sscanf(str, fstr, s3, s4);
+ck_assert_int_eq(res1, res2);
+ck_assert_str_eq(s1, s3);
+ck_assert_str_eq(s2, s4);
+
+#test test_n_sscanf_strings_4
+
+char s1[100] = {0};
+char s2[100] = {0};
+char s3[100] = {0};
+char s4[100] = {0};
+
+int a1 = 0, a2 = 0;
+unsigned int u1 = 0, u2 = 0;
+const char str[] = "21School 2022???????????\n456789";
+const char fstr[] = "%*d%s%d%s%u";
+
+int res1 = n_sscanf(str, fstr, s1, &a1, s3, &u1);
+int res2 = sscanf(str, fstr, s2, &a2, s4, &u2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_str_eq(s1, s2);
+ck_assert_int_eq(u1, u2);
+ck_assert_str_eq(s3, s4);
+
+#test test_n_sscanf_strings_5
+
+char format[] = "aa %*2c%s";
+char str[] = "aa\n\taahouse\t1";
+char s1[] = "11111111", s2[] = "11111111";
+
+int res1 = n_sscanf(str, format, s1);
+int res2 = sscanf(str, format, s2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_str_eq(s1, s2);
+
+#test test_n_sscanf_floats_1
+
+float a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0;
+
+const char str[] = "12.22 0.0 . ";
+const char fstr[] = "%f %f %f";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1);
+
+int res2 = sscanf(str, fstr, &a2, &b2, &c2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+ck_assert_float_eq(b1, b2);
+ck_assert_float_eq(c1, c2);
+
+#test test_n_sscanf_floats_2
+
+float a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+int n1 = 123, n2 = 124;
+
+const char str[] = "513.41 -4.14135 414.3333 +112.0001";
+const char fstr[] = "%f %f %f %f %n";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1, &n1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+ck_assert_float_eq(b1, b2);
+ck_assert_float_eq(c1, c2);
+ck_assert_float_eq(d1, d2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_floats_3
+
+float a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+int n1 = 0, n2 = 0;
+const char str[] = "-1e+18 1.31e+4 0.12e1 0.444e-5";
+const char fstr[] = "%E %G %g %G %n";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1, &n1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+ck_assert_float_eq(b1, b2);
+ck_assert_float_eq(c1, c2);
+ck_assert_float_eq(d1, d2);
+
+#test test_n_sscanf_floats_4
+
+char format[] = "%f%f";
+char str[] =
+    "-1.175494e-38 "
+    "3.402823e+38";
+float d1 = 0, d2 = 0, d3 = 0, d4 = 0;
+int res1 = n_sscanf(str, format, &d1, &d3);
+int res2 = sscanf(str, format, &d2, &d4);
+
+ck_assert_float_eq(d1, d2);
+ck_assert_float_eq(d3, d4);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_floats_5
+
+long double a1 = 1, a2 = 0, b1 = 1, b2 = 0, c1 = 1, c2 = 0, d1 = 1, d2 = 0;
+
+const char str[] = "245.1 -7.1835 1.3333 +2.0091";
+const char fstr[] = "%Lg %LE %Le %Lf";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+ck_assert_float_eq(b1, b2);
+ck_assert_float_eq(c1, c2);
+ck_assert_float_eq(d1, d2);
+
+#test test_n_sscanf_floats_6
+
+double a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+
+const char str[] = "4.0 8.00001 -4123123 ";
+const char fstr[] = "%3lf %lf %2lf %lf";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+ck_assert_double_eq(b1, b2);
+ck_assert_double_eq(c1, c2);
+ck_assert_double_eq(d1, d2);
+
+#test test_n_sscanf_floats_7
+float a1 = 0, a2 = 0;
+
+const char str[] = "a19.0";
+const char fstr[] = "%f";
+
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+
+#test test_n_sscanf_floats_8
+float a1 = 1, a2 = 2;
+
+const char str[] = "a19.0";
+const char fstr[] = "a%f";
+
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_float_eq(a1, a2);
+
+#test test_n_sscanf_d_1
+
+int a1 = 1, a2 = 2;
+int b1 = 1, b2 = 2;
+const char str[] = "45 ::::: 32";
+const char fstr[] = "%d ::::: %d";
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+
+#test test_n_sscanf_d_2
+
+int a1 = 0, a2 = 0;
+const char str[] = "-a";
+const char fstr[] = "%d";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+
+#test test_n_sscanf_d_3
+
+long a1 = 0, a2 = 0, c1 = 0, c2 = 0;
+long int b1 = 0, b2 = 0;
+int n1 = 2, n2 = 3;
+const char fstr[] = "%2ld %2ld %ld %n";
+const char str[] = "-555 +666 300004";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &n1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_d_4
+
+short int a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0;
+int n1 = 1, n2 = 2;
+const char str[] = "1337 21 5008 3000";
+const char fstr[] = "%2hd %2hd %hd %n";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &n1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_d_5
+
+int a1 = 1, a2 = 2, b1 = 3, b2 = 4;
+const char str[] = "2147483647 	-2147483648";
+const char fstr[] = "%d %d";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+
+#test test_n_sscanf_d_6
+
+short int a1 = 1, a2 = 2, b1 = 3, b2 = 4;
+int n1 = 1, n2 = 2;
+const char str[] = "32769 		-32770";
+const char fstr[] = "%hd %hd %n";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &n1);
+int res2 = sscanf(str, fstr, &a2, &b2, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_d_7
+
+int a1 = 0, a2 = 0, b1 = 5, b2 = 5;
+const char str[] = "-0 +0 +0 -0";
+const char fstr[] = "%2d %1d";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+
+#test test_n_sscanf_o_1
+
+unsigned int a1 = 1, a2 = 2;
+const char str[] = "04 ";
+const char fstr[] = "%o";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_o_2
+
+unsigned int a1 = 1, a2 = 1;
+const char str[] = "8 ";
+const char fstr[] = "%o";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_o_3
+
+char format[] = "-%o %*lo %lo %o %n";
+char str[] = "-635 63044711777 777777777777777777777 +222";
+unsigned int o1 = 0, o2 = 0, o7 = 0, o8 = 0;
+long unsigned int o3 = 0, o4 = 0;
+int n1 = 1, n2 = 2;
+int res1 = n_sscanf(str, format, &o1, &o3, &o2, &n1);
+int res2 = sscanf(str, format, &o7, &o4, &o8, &n2);
+
+ck_assert_uint_eq(o1, o7);
+ck_assert_uint_eq(o3, o4);
+ck_assert_uint_eq(o2, o8);
+ck_assert_int_eq(n1, n2);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_o_4
+
+unsigned int a1, a2;
+unsigned short int b1, b2;
+const char str[] = "123531";
+const char fstr[] = "%4o %ho";
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+ck_assert_uint_eq(b1, b2);
+
+#test test_n_sscanf_x_1
+
+unsigned int a1 = 1, a2 = 0;
+const char str[] = "0xabF";
+const char fstr[] = "%X";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_x_2
+
+unsigned int a1 = 2, a2 = 2;
+const char str[] = "kkk";
+const char fstr[] = "%X";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_x_3
+
+unsigned int a1 = 0, a2 = 0;
+const char str[] = "-a";
+const char fstr[] = "%x";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_x_4
+
+char format[] = "-%x %lX %lX kkk%x";
+char str[] = "-f9 2D798A5F8C5E 7FFFFFFFFFFFFFFF kkk0xAA";
+unsigned int x1 = 1, x2 = 2, x7 = 3, x8 = 4;
+long unsigned int x3 = 5, x4 = 6;
+long unsigned int x5 = 7, x6 = 8;
+int res1 = n_sscanf(str, format, &x1, &x3, &x5, &x7);
+int res2 = sscanf(str, format, &x2, &x4, &x6, &x8);
+
+ck_assert_uint_eq(x1, x2);
+ck_assert_uint_eq(x3, x4);
+ck_assert_uint_eq(x5, x6);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_x_5
+
+unsigned short int a1 = 1, a2 = 2;
+const char str[] = "0x777 F";
+const char fstr[] = "%*x %hX";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_x_6
+
+unsigned int a1 = 1, a2 = 2, b1 = 3, b2 = 4;
+const char str[] = "123531FFF";
+const char fstr[] = "%2X %x";
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+ck_assert_uint_eq(b1, b2);
+
+#test test_n_sscanf_u_1
+
+unsigned int a1 = 1, a2 = 2;
+const char str[] = "4294967295";
+const char fstr[] = "%u";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_u_2
+
+unsigned int a1 = 0, a2 = 0;
+const char str[] = "kkk";
+const char fstr[] = "%u";
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+
+#test test_n_sscanf_u_3
+
+char format[] = "%%%lu%%%*u %lu";
+char str[] = "%-123456%1950228 +4294967295";
+long unsigned int u1 = 1, u2 = 2;
+long unsigned int u3 = 3, u4 = 4;
+int res1 = n_sscanf(str, format, &u1, &u2);
+int res2 = sscanf(str, format, &u3, &u4);
+
+ck_assert_uint_eq(u1, u3);
+ck_assert_uint_eq(u2, u4);
+ck_assert_int_eq(res1, res2);
+
+#test test_n_sscanf_u_4
+
+unsigned short a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+const char str[] = "-1337 +21 --5008 3000";
+const char fstr[] = "%hu %hu %hu %hu";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(d1, d2);
+
+#test test_n_sscanf_u_5
+
+unsigned long int a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0,
+                  d2 = 0;
+const char str[] = "1337 23333-3331";
+const char fstr[] = "%1lu %3lu %5lu %4lu";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_uint_eq(a1, a2);
+ck_assert_uint_eq(b1, b2);
+ck_assert_uint_eq(c1, c2);
+ck_assert_uint_eq(d1, d2);
+
+#test test_n_sscanf_i_1
+
+char format[] = "%i";
+char str[] = "klm";
+int i1 = 9, i2 = 9;
+
+int res1 = n_sscanf(str, format, &i1);
+int res2 = sscanf(str, format, &i2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(i1, i2);
+
+#test test_n_sscanf_i_2
+
+char format[] = "%*i %i";
+char str[] = "0x22 -022";
+int i1 = 8, i2 = 9;
+
+int res1 = n_sscanf(str, format, &i1);
+int res2 = sscanf(str, format, &i2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(i1, i2);
+
+#test test_n_sscanf_i_3
+
+long a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0;
+const char str[] = "01 -123 +723";
+const char fstr[] = "%li %li %li";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+
+#test test_n_sscanf_i_4
+
+long a1 = 0, a2 = 0;
+int b1 = 0, b2 = 0;
+const char str[] = "  055555 ";
+const char fstr[] = "%2li %i";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1);
+int res2 = sscanf(str, fstr, &a2, &b2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+
+#test test_n_sscanf_n_1
+
+char format[] = "%n";
+char str[] = "";
+int n1 = -10, n2 = -12;
+int res1 = n_sscanf(str, format, &n1);
+int res2 = sscanf(str, format, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_n_2
+
+char format[] = "%%%n";
+char str[] = "%";
+int n1 = -10, n2 = -9;
+int res1 = n_sscanf(str, format, &n1);
+int res2 = sscanf(str, format, &n2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_n_3
+
+long a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
+int n1 = 0, n2 = 5, n3 = 1, n4 = 2;
+
+const char str[BUFF_SIZE] = "0x32 160 -07 80";
+const char fstr[BUFF_SIZE] = "%li %li %n %li %li %n";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &n1, &c1, &d1, &n3);
+int res2 = sscanf(str, fstr, &a2, &b2, &n2, &c2, &d2, &n4);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(n1, n2);
+ck_assert_int_eq(a1, a2);
+ck_assert_int_eq(b1, b2);
+ck_assert_int_eq(c1, c2);
+ck_assert_int_eq(d1, d2);
+ck_assert_int_eq(n3, n4);
+
+#test test_n_sscanf_n_4
+int n1 = 1, n2 = 5;
+
+char s1[BUFF_SIZE] = {0};
+char s2[BUFF_SIZE] = {0};
+char s3[BUFF_SIZE] = {0};
+char s4[BUFF_SIZE] = {0};
+char ch_1 = 0, ch_2 = 2;
+
+const char str[] = "School 21 .";
+const char fstr[] = "%s %s %c %n";
+
+int res1 = n_sscanf(str, fstr, s1, s3, &ch_1, &n1);
+int res2 = sscanf(str, fstr, s2, s4, &ch_2, &n2);
+
+ck_assert_int_eq(res1, res2);
+
+ck_assert_int_eq(n1, n2);
+ck_assert_str_eq(s1, s2);
+ck_assert_str_eq(s3, s4);
+ck_assert_int_eq(ch_1, ch_2);
+ck_assert_int_eq(n1, n2);
+
+#test test_n_sscanf_n_5
+
+char format[] = "%10d %i %5ld %n %i %*i %n %*d %li";
+char str[] = "12345678900x15 123 044 16 -0-0X64A999 8";
+int d1, d2, i1, i2, i3, i4, n1, n2, n3, n4;
+long int d3, d4, i5, i6;
+
+int res1 = n_sscanf(str, format, &d1, &i1, &d3, &n1, &i3, &n3, &i5);
+int res2 = sscanf(str, format, &d2, &i2, &d4, &n2, &i4, &n4, &i6);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_int_eq(d1, d2);
+ck_assert_int_eq(i1, i2);
+ck_assert_int_eq(i3, i4);
+ck_assert_int_eq(n1, n2);
+ck_assert_int_eq(n3, n4);
+ck_assert_int_eq(d3, d4);
+ck_assert_int_eq(i5, i6);
+
+#test test_n_sscanf_p_1
+
+char format[] = "%p";
+char str[] = " 0x7ffdd86873f0";
+char c3 = '?', c4 = '?';
+char *p1 = &c3, *p2 = &c4;
+char **p3 = &p1, **p4 = &p2;
+int res1 = n_sscanf(str, format, p3);
+int res2 = sscanf(str, format, p4);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_ptr_eq(*p3, *p4);
+
+#test test_n_sscanf_p_2
+
+int *a1 = 0, *a2 = 0, *b1 = 0, *b2 = 0, *c1 = 0, *c2 = 0, *d1 = 0, *d2 = 0;
+const char str[] = "0xFFFF 033 0x7123 0x1";
+const char fstr[] = "%p %p %p %p";
+
+int res1 = n_sscanf(str, fstr, &a1, &b1, &c1, &d1);
+int res2 = sscanf(str, fstr, &a2, &b2, &c2, &d2);
+ck_assert_int_eq(res1, res2);
+ck_assert_ptr_eq(a1, a2);
+ck_assert_ptr_eq(b1, b2);
+ck_assert_ptr_eq(c1, c2);
+ck_assert_ptr_eq(d1, d2);
+
+#test test_n_sscanf_p_3
+
+int *a1 = 0, *a2 = 0;
+
+const char str[] = "NULL";
+const char fstr[] = "%p ";
+
+int res1 = n_sscanf(str, fstr, &a1);
+int res2 = sscanf(str, fstr, &a2);
+
+ck_assert_int_eq(res1, res2);
+ck_assert_ptr_eq(a1, a2);
